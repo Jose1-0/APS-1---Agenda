@@ -1,0 +1,8 @@
+# Django
+backend/venv/
+backend/*.sqlite3
+backend/*.pyc
+
+# React
+frontend/node_modules/
+frontend/.env
