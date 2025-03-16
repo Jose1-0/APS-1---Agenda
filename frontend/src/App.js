@@ -8,6 +8,8 @@ const localizer = momentLocalizer(moment);
 
 const App = () => {
     const [events, setEvents] = useState([]);
+    const [view, setView] = useState('month');
+    const [date, setDate] = useState(new Date());
 
     useEffect(() => {
         axios.get('http://localhost:8000/api/events/')
@@ -30,6 +32,10 @@ const App = () => {
                 events={events}
                 startAccessor="start"
                 endAccessor="end"
+                view={view}
+                onView={setView}
+                date={date}
+                onNavigate={setDate}
             />
         </div>
     );
