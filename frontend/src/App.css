@@ -1,5 +1,21 @@
 .App {
   text-align: center;
+
+
+}
+
+.add-event-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.add-event-button:hover {
+  background-color: #45a049;
 }
 
 .App-logo {
@@ -36,3 +52,5 @@
     transform: rotate(360deg);
   }
 }
+
+
