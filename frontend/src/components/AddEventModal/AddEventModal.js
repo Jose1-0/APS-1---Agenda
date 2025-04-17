@@ -16,7 +16,7 @@ const AddEventModal = ({ isOpen, onRequestClose, onSave, event }) => {
       setDescription(event.description);
       setStart(moment(event.start).format('YYYY-MM-DDTHH:mm'));
       setEnd(moment(event.end).format('YYYY-MM-DDTHH:mm'));
-      setPriority(event.priority);
+      setPriority(event.priority ?? 1); // usa 1 se for null ou undefined
     } else {
       // Limpa o formulário se estiver adicionando um novo evento
       setTitle('');
@@ -25,26 +25,28 @@ const AddEventModal = ({ isOpen, onRequestClose, onSave, event }) => {
       setEnd('');
       setPriority(1);
     }
-  }, [event, isOpen]); // Adicione `isOpen` como dependência
+  }, [event, isOpen]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newEvent = {
+      id: event?.id,
       title,
       description,
       start: new Date(start),
       end: new Date(end),
       priority: parseInt(priority, 10),
     };
-    onSave(newEvent);
+    console.log("Salvando evento com ID:", newEvent.id);
+    onSave(newEvent); // Vai pra handleEditEvent ou handleAddEvent
     onRequestClose();
   };
 
   return (
     <div className={`modal ${isOpen ? 'open' : ''}`}>
       <div className="modal-content">
-        <h2>{event ? 'Editar Evento' : 'Criar Evento'}</h2> {/* Título ajustado */}
-        <form onSubmit={handleSubmit}>
+        <h2>{event && event.id ? 'Editar Evento' : 'Criar Evento'}</h2> {/* Título ajustado */}
+        <form onSubmit={handleSubmit}>  
           <div className="form-group">
             <label>Título</label>
             <input

@@ -6,7 +6,7 @@ const CustomAgendaEvent = ({ event }) => {
     <div className="custom-agenda-event">
       <strong>{event.title}</strong>
       <p>{event.description}</p>
-      {event.priority && <small>Prioridade: {event.priority}</small>}
+      {/* {event.priority && <small>Prioridade: {event.priority}</small>} */}
     </div>
   );
 };

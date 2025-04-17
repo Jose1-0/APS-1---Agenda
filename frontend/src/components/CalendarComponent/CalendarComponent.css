@@ -1,0 +1,45 @@
+.custom-day-wrapper {
+    position: relative;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    /* height: 100%; */
+  }
+  
+  .custom-day-wrapper .add-button {
+    /* position: absolute;
+    top: 4px;
+    right: 4px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    cursor: pointer; */
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    /* z-index: 10; */
+  }
+  
+  .custom-day-wrapper:hover .add-button {
+    opacity: 1;
+  }
+  
+  .rbc-today {
+    background-color: #eaf6ff !important;
+  }
+  
+  .rbc-month-view .rbc-day-bg.rbc-today {
+    background-color: #eaf6ff !important;
+  }
+
+  .rbc-month-view .rbc-date-cell {
+    position: relative;
+  }
+
+  /* Mostra o botão ao passar o mouse sobre a célula inteira */
+.rbc-month-view .rbc-date-cell:hover .custom-day-wrapper .add-button {
+  opacity: 1;
+}

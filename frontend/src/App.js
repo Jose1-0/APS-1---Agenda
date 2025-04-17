@@ -6,21 +6,21 @@ import AddEventModal from './components/AddEventModal/AddEventModal';
 import './App.css';
 
 const App = () => {
-  const [events, setEvents] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState(null);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [addModalIsOpen, setAddModalIsOpen] = useState(false);
-  const [view, setView] = useState('month');
-  const [date, setDate] = useState(new Date());
+  const [events, setEvents] = useState([]); // Guarda todos os eventos do calendário
+  const [selectedEvent, setSelectedEvent] = useState(null); // Evento clicado
+  const [modalIsOpen, setModalIsOpen] = useState(false); // Modal de visualização
+  const [addModalIsOpen, setAddModalIsOpen] = useState(false); // Modal de adicionar/editar
+  const [view, setView] = useState('month'); // Visualização atual (mês, semana, etc.)
+  const [date, setDate] = useState(new Date()); // Data atual exibida
 
   // Carregar eventos
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await getEvents();
+        const response = await getEvents(); // Chama a API Django
         const formattedEvents = response.data.map(event => ({
           ...event,
-          start: new Date(event.start),
+          start: new Date(event.start), // Converte para objeto Date
           end: new Date(event.end),
         }));
         setEvents(formattedEvents);
@@ -68,7 +68,7 @@ const App = () => {
   // Editar evento
   const handleEditEvent = async (updatedEvent) => {
     try {
-      const response = await updateEvent(selectedEvent.id, updatedEvent);
+      const response = await updateEvent(updatedEvent.id, updatedEvent); // usa o id do próprio evento
       const updatedEvents = events.map(event =>
         event.id === selectedEvent.id ? response.data : event
       );
@@ -79,9 +79,20 @@ const App = () => {
     }
   };
 
+  const handleSelectDate = (selectedDate) => {
+    const newEvent = {
+      title: '',
+      start: selectedDate,
+      end: selectedDate,
+    };
+    console.log("Criando novo evento:", newEvent);
+    setSelectedEvent(newEvent);
+    setAddModalIsOpen(true);
+  };
+
   return (
     <div className="app">
-      <button
+      {/* <button
         className="add-event-button"
         onClick={() => {
           setSelectedEvent(null); // Limpa o evento selecionado
@@ -89,7 +100,7 @@ const App = () => {
         }}
       >
         Adicionar Evento
-      </button>
+      </button> */}
       <CalendarComponent
         events={events}
         onSelectEvent={handleSelectEvent}
@@ -97,6 +108,7 @@ const App = () => {
         onView={setView}
         date={date}
         onNavigate={setDate}
+        onSelectDate={handleSelectDate}
       />
       <EventModal
         isOpen={modalIsOpen}
@@ -105,6 +117,7 @@ const App = () => {
         onDelete={handleDeleteEvent}
         onEdit={() => {
           setAddModalIsOpen(true); // Abre o modal de edição
+          setSelectedEvent(prev => ({ ...prev })); // força reuso do mesmo evento com id
         }}
       />
       <AddEventModal
@@ -113,8 +126,14 @@ const App = () => {
           setAddModalIsOpen(false); // Fecha o modal
           setSelectedEvent(null); // Limpa o evento selecionado
         }}
-        onSave={selectedEvent ? handleEditEvent : handleAddEvent} // Usa handleEditEvent se estiver editando
-        event={selectedEvent} // Passa o evento selecionado para edição
+        onSave={(eventData) =>  {
+          if (eventData.id) {
+            handleEditEvent(eventData);
+          } else {
+            handleAddEvent(eventData);
+          }
+        }}
+        event={selectedEvent}
       />
     </div>
   );
