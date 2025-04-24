@@ -50,3 +50,17 @@ Criar e aplicar Migrations (banco de dados):
 python manage.py makemigrations
 python manage.py migrate
 
+
+# Padões GOF usados
+
+## 1. Template Method
+  Explicação: Define o esqueleto de um algoritmo na superclasse, permitindo que subclasses substituam etapas específicas sem alterar a estrutura geral.
+
+  ![image](https://github.com/user-attachments/assets/42533d84-c3d3-4493-addd-745ba5fbc692)
+  
+Aqui, EventViewSet herda de ModelViewSet, que fornece a estrutura básica para operações CRUD. A classe EventViewSet pode sobrescrever métodos específicos para personalizar o comportamento, seguindo o padrão Template Method.  
+
+  
+
+
+
