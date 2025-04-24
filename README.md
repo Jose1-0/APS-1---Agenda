@@ -61,6 +61,19 @@ python manage.py migrate
 Aqui, EventViewSet herda de ModelViewSet, que fornece a estrutura básica para operações CRUD. A classe EventViewSet pode sobrescrever métodos específicos para personalizar o comportamento, seguindo o padrão Template Method.  
 
   
+## 2. Facade (Fachada)
+Explicação: Fornece uma interface unificada para um conjunto de interfaces em um subsistema, facilitando o uso.
+
+![image](https://github.com/user-attachments/assets/f0ec3528-d0ba-4a93-ac4b-49c11fc851da)
+
+Essas funções atuam como uma fachada para as operações da API, simplificando as chamadas HTTP e abstraindo os detalhes de implementação.
 
 
+## 3. Adapter (Adaptador)
+Explicação: Permite que interfaces incompatíveis trabalhem juntas, convertendo a interface de uma classe em outra esperada pelos clientes.​
+
+![image](https://github.com/user-attachments/assets/a243fa4e-76a3-45c3-9a2d-c03c34da45bc)
+
+
+O EventSerializer adapta o modelo Event para um formato JSON, permitindo que o frontend consuma os dados de forma compatível.
 
