@@ -3,6 +3,12 @@ backend/venv/
 backend/*.sqlite3
 backend/*.pyc
 
+# Ignora a pasta __pycache__ em qualquer lugar do projeto
+__pycache__/
+
+# Ignora todos os arquivos .pyc (arquivos Python compilados)
+*.pyc
+
 # React
 frontend/node_modules/
 frontend/.env
