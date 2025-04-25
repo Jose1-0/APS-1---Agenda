@@ -17,7 +17,38 @@ const CustomAgendaEvent = ({ event }) => (
   </span>
 );
 
-const CalendarComponent = ({ events, onSelectEvent, view, onView, date, onNavigate, onSelectDate}) => {
+// Função para estilizar eventos com base na prioridade
+const eventStyleGetter = (event) => {
+  let backgroundColor;
+
+  switch (event.priority) {
+    case 1:
+      backgroundColor = '#4caf50'; // verde
+      break;
+    case 2:
+      backgroundColor = '#ffeb3b'; // amarelo
+      break;
+    case 3:
+      backgroundColor = '#f44336'; // vermelho
+      break;
+    default:
+      backgroundColor = '#3174ad'; // cor padrão (azul)
+  }
+
+  return {
+    style: {
+      backgroundColor,
+      borderRadius: '5px',
+      opacity: 0.9,
+      color: 'black',
+      border: 'none',
+      display: 'block',
+      paddingLeft: '4px',
+    },
+  };
+};
+
+const CalendarComponent = ({events, onSelectEvent, view, onView, date, onNavigate, onSelectDate}) => {
   return (
     <div style={{ height: '500px', padding: '20px' }}>
       <h1>Agenda de Eventos</h1>
@@ -31,6 +62,7 @@ const CalendarComponent = ({ events, onSelectEvent, view, onView, date, onNaviga
         onView={onView}
         date={date}
         onNavigate={onNavigate}
+        eventPropGetter={eventStyleGetter}
         components={{
           agenda: {
             event: CustomAgendaEvent,
