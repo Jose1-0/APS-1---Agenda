@@ -17,50 +17,6 @@ const CustomAgendaEvent = ({ event }) => (
   </span>
 );
 
-// // Novo componente para envolver cada célula de dia
-// const CustomDayWrapper = ({ children, value }, { onSelectDate }) => {
-//   return (
-//     <div className="custom-day">
-//       {children}
-//       <button
-//         className="add-button"
-//         onClick={(e) => {
-//           e.stopPropagation();
-//           onSelectDate(value); // Chama a função com a data do dia clicado
-//         }}
-//       >
-//         +
-//       </button>
-//     </div>
-//   );
-// };
-
-// Corrigindo contexto para passar props corretamente
-// const CustomDayWrapperWithProps = (props) => {
-//   const { children, value } = props;
-//   const onSelectDate = props.onSelectDate || (() => {});
-  
-//   // Clona o filho e adiciona uma classe extra
-//   const childWithClass = React.cloneElement(children, {
-//     className: `${children.props.className || ''} custom-day-content`,
-//   });
-  
-//   return (
-//     <div className="custom-day">
-//       {childWithClass}
-//       <button
-//         className="add-button"
-//         onClick={(e) => {
-//           e.stopPropagation();
-//           onSelectDate(value);
-//         }}
-//       >
-//         +
-//       </button>
-//     </div>
-//   );
-// };
-
 const CalendarComponent = ({ events, onSelectEvent, view, onView, date, onNavigate, onSelectDate}) => {
   return (
     <div style={{ height: '500px', padding: '20px' }}>
@@ -75,7 +31,6 @@ const CalendarComponent = ({ events, onSelectEvent, view, onView, date, onNaviga
         onView={onView}
         date={date}
         onNavigate={onNavigate}
-        // onSelectDate={handleSelectDate}
         components={{
           agenda: {
             event: CustomAgendaEvent,

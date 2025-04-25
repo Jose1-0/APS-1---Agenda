@@ -33,8 +33,8 @@ const App = () => {
 
   // Abrir modal ao clicar em um evento
   const handleSelectEvent = (event) => {
-    setSelectedEvent(event);
-    setModalIsOpen(true);
+    setSelectedEvent(event); // Armazena o evento clicado
+    setModalIsOpen(true);    // Abre o modal de visualização
   };
 
   // Fechar modal
@@ -92,15 +92,6 @@ const App = () => {
 
   return (
     <div className="app">
-      {/* <button
-        className="add-event-button"
-        onClick={() => {
-          setSelectedEvent(null); // Limpa o evento selecionado
-          setAddModalIsOpen(true); // Abre o modal de adição
-        }}
-      >
-        Adicionar Evento
-      </button> */}
       <CalendarComponent
         events={events}
         onSelectEvent={handleSelectEvent}
