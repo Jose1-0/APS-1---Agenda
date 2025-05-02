@@ -7,4 +7,5 @@ router.register(r'events', EventViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
+    path('api/', include('events.urls')),  # <-- adiciona as rotas manuais do app events
 ]
