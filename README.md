@@ -40,6 +40,58 @@ npm install
 Rodar servidor React:
 npm start
 
+Passos adicionais para configurar as notificações push:
+Instalar o Docker e rodar o Redis
+O Redis será usado pelo Celery para armazenar tarefas assíncronas, que são necessárias para enviar as notificações.
+
+Instalar o Docker:
+
+Acesse Docker e baixe o Docker Desktop para o seu sistema operacional.
+
+Após a instalação, inicie o Docker.
+
+Rodar o Redis com Docker:
+Execute o seguinte comando no terminal para rodar o Redis em um container:
+
+  docker run -d -p 6379:6379 --name redis redis
+
+Verifique se o Redis está em execução:
+
+  docker ps
+
+Configurar as VAPID keys para as notificações push
+O Django precisa das chaves VAPID para enviar as notificações. Você pode gerar essas chaves.
+
+No terminal, no diretório backend (dentro da venv), execute:
+
+  python generate_vapid_keys.py
+
+Copie as chaves públicas e privadas geradas e abra o arquivo .env no diretório backend com as seguintes variáveis:
+
+  VAPID_PUBLIC_KEY=SEU_PUBLIC_KEY
+  VAPID_PRIVATE_KEY=SEU_PRIVATE_KEY
+
+Essas chaves são usadas para autenticar o servidor e garantir a segurança nas notificações.
+
+Rodar o Celery para agendamento de tarefas
+O Celery é necessário para rodar as tarefas agendadas que verificam os eventos e enviam as notificações.
+
+Abrir dois terminais:
+
+No primeiro terminal, execute o Celery Worker:
+
+  celery -A agenda worker --loglevel=info --pool=solo
+
+Rodar as migrações:
+
+No segundo terminal, precisa rodar as migrações para criar as tabelas necessárias. Execute o seguinte comando na venv:
+
+  python manage.py migrate django_celery_beat
+
+Execute o Celery Beat para agendar as tarefas:
+
+  celery -A agenda beat --loglevel=info
+
 # FIM
 
 # Comandos úteis Django:

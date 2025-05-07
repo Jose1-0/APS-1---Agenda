@@ -4,6 +4,7 @@ import CalendarComponent from './components/CalendarComponent/CalendarComponent'
 import EventModal from './components/EventModal/EventModal';
 import AddEventModal from './components/AddEventModal/AddEventModal';
 import './App.css';
+import { registerForPush } from './utils/pushNotifications';
 
 const App = () => {
   const [events, setEvents] = useState([]); // Guarda todos os eventos do calendário
@@ -30,6 +31,7 @@ const App = () => {
       }
     };
     fetchEvents();
+    registerForPush();  // Registrar para notificações push
   }, []);
 
   // Abrir modal ao clicar em um evento
