@@ -13,6 +13,7 @@ const App = () => {
   const [addModalIsOpen, setAddModalIsOpen] = useState(false); // Modal de adicionar/editar
   const [view, setView] = useState('month'); // Visualização atual (mês, semana, etc.)
   const [date, setDate] = useState(new Date()); // Data atual exibida
+  const [priorityFilter, setPriorityFilter] = useState(null);
 
   // Carregar eventos
   useEffect(() => {
@@ -95,13 +96,19 @@ const App = () => {
   return (
     <div className="app">
       <CalendarComponent
-        events={events}
+        events={
+          priorityFilter
+            ? events.filter(event => event.priority === priorityFilter)
+            : events
+        }
         onSelectEvent={handleSelectEvent}
         view={view}
         onView={setView}
         date={date}
         onNavigate={setDate}
         onSelectDate={handleSelectDate}
+        setPriorityFilter={setPriorityFilter}
+        priorityFilter={priorityFilter}
       />
       <EventModal
         isOpen={modalIsOpen}

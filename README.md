@@ -129,3 +129,65 @@ Explicação: Permite que interfaces incompatíveis trabalhem juntas, convertend
 
 O EventSerializer adapta o modelo Event para um formato JSON, permitindo que o frontend consuma os dados de forma compatível.
 
+## 4. Active Record
+Explicação: Cada objeto representa uma linha no banco de dados e possui métodos para persistência.
+
+Trecho do Código:
+
+![image](https://github.com/user-attachments/assets/f10bad97-d365-4f56-bc36-7066b30fab19)
+
+A classe Event representa uma tabela no banco de dados e inclui métodos para salvar, atualizar e deletar registros, seguindo o padrão Active Record.
+
+## 5. Singleton
+Explicação: Garante que uma classe tenha apenas uma instância e fornece um ponto de acesso global a ela.
+
+Trecho do Código:
+
+![image](https://github.com/user-attachments/assets/5707ebbb-55c5-457b-a254-af12de2bef59)
+
+A configuração da aplicação EventsConfig é instanciada uma única vez durante o ciclo de vida da aplicação Django, exemplificando o padrão Singleton.
+
+## 6. Observer (Observador)
+Explicação: Define uma dependência um-para-muitos entre objetos, de modo que quando um objeto muda de estado, todos os seus dependentes são notificados.
+
+Trecho do Código:
+
+![image](https://github.com/user-attachments/assets/5a6630ee-6443-4d83-a222-2e3b75f11ec5)
+
+O useEffect observa mudanças no estado e atualiza os componentes conforme necessário, seguindo o padrão Observer.
+
+## 7. Strategy (Estratégia)
+Explicação: Define uma família de algoritmos, encapsula cada um deles e os torna intercambiáveis.
+
+Trecho do Código:
+
+![image](https://github.com/user-attachments/assets/95cbe352-9af1-4f8f-bc6d-5d08b4eaa0ac)
+
+O componente Calendar permite alternar entre diferentes visualizações (mês, semana, dia), cada uma representando uma estratégia de exibição.
+
+## 8. Command (Comando)
+Explicação: Encapsula uma solicitação como um objeto, permitindo parametrizar clientes com diferentes solicitações.
+
+Trecho do Código:
+
+![image](https://github.com/user-attachments/assets/62ebca5f-8efc-4b1a-a6fe-34c72fd1a521)
+
+A função handleAddEvent encapsula a ação de adicionar um evento, permitindo que seja chamada de diferentes partes do código, seguindo o padrão Command.
+
+## 9. Composite (Composto)
+Explicação: Compõe objetos em estruturas de árvore para representar hierarquias parte-todo, permitindo que clientes tratem objetos individuais e composições de objetos de maneira uniforme.
+
+Trecho do Código:
+
+![image](https://github.com/user-attachments/assets/5d80ec15-7dc0-4e92-b6fe-f2cbb47d87a3)
+
+O CalendarComponent é composto por subcomponentes como CustomAgendaEvent, permitindo a construção de interfaces complexas a partir de componentes simples, exemplificando o padrão Composite.
+
+## 10. Decorator (Decorador)
+Explicação: Anexa responsabilidades adicionais a um objeto dinamicamente, proporcionando uma alternativa flexível à subclasse.
+
+Trecho do Código:
+![image](https://github.com/user-attachments/assets/3f549d2a-dd57-4d77-977e-2dc63afe110e)
+
+O CustomAgendaEvent adiciona estilos e estrutura ao evento exibido, funcionando como um decorador que adiciona funcionalidades sem alterar o objeto original.
+
