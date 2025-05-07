@@ -12,10 +12,10 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subscription
-        fields = ['endpoint', 'keys_auth', 'keys_p256dh', 'keys']
+        fields = ['endpoint', 'keys']
 
     def create(self, validated_data):
-        keys = validated_data.pop('keys')
+        keys = validated_data.pop('keys', {})
         return Subscription.objects.create(
             endpoint=validated_data['endpoint'],
             keys_p256dh=keys['p256dh'],

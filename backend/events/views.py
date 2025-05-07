@@ -6,7 +6,6 @@ from django.http import JsonResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import json
-from rest_framework.decorators import api_view
 
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
