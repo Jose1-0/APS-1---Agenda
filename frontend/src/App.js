@@ -37,41 +37,6 @@ const App = () => {
       Notification.requestPermission();
     }
 
-    const verificarEventosProximos = () => {
-      if (Notification.permission !== 'granted') return;
-
-      const agora = new Date();
-      console.log("Horário (local):", agora.toString());
-      const proximosMinutos = 30;
-
-      const notificados = JSON.parse(localStorage.getItem('eventosNotificados') || '[]');
-      const novosNotificados = [...notificados];
-
-      events.forEach(evento => {
-        const tempoRestante = (new Date(evento.start) - agora) / 60000;
-        console.log("Evento:", evento.title);
-        console.log("Início do evento (local):", new Date(evento.start).toString());
-        console.log("Tempo restante em minutos:", tempoRestante);
-
-        if (
-          tempoRestante >= -1 && // permite atraso de até 1 minuto
-          tempoRestante <= proximosMinutos &&
-          !notificados.includes(evento.id)
-        ) {
-          console.log("Disparando notificação para:", evento.title);
-          new Notification("Lembrete de Evento", {
-            body: `${evento.title} começa em ${Math.round(tempoRestante)} minutos.`,
-          });
-
-          novosNotificados.push(evento.id);
-        }
-      });
-
-      localStorage.setItem('eventosNotificados', JSON.stringify(novosNotificados));
-    };
-
-    const intervalo = setInterval(verificarEventosProximos, 60000);
-
     const limparNotificacoesAntigas = () => {
       const agora = new Date();
       if (agora.getHours() === 0 && agora.getMinutes() === 0) {
@@ -80,9 +45,65 @@ const App = () => {
     };
     const limpezaIntervalo = setInterval(limparNotificacoesAntigas, 60000);
     return () => {
-      clearInterval(intervalo);
       clearInterval(limpezaIntervalo);
     };
+  }, []);
+
+  useEffect(() => {
+    const verificarEventosProximos = () => {
+      if (Notification.permission !== 'granted') return;
+
+      if (!events || events.length === 0) {
+        return;
+      }
+
+      const agora = new Date(); // Horário local
+      const proximosMinutos = 10;
+
+      const notificados = JSON.parse(localStorage.getItem('eventosNotificados') || '[]');
+      const novosNotificados = [...notificados];
+
+      events.forEach(evento => {
+        const inicioEvento = new Date(evento.start); // Converte UTC para local
+        const tempoRestante = (inicioEvento - agora) / 60000; // Diferença em minutos
+
+        if (
+          tempoRestante >= -1 && // permite atraso de até 1 minuto
+          tempoRestante <= proximosMinutos &&
+          !notificados.includes(evento.id)
+        ) {
+          try {
+            new Notification("Lembrete de Evento", {
+              body: `${evento.title} começa em ${Math.round(tempoRestante)} minutos.`,
+            });
+          } catch (error) {
+            console.error("Erro ao disparar notificação:", error);
+          }
+          novosNotificados.push(evento.id);
+        }
+      });
+
+      localStorage.setItem('eventosNotificados', JSON.stringify(novosNotificados));
+    };
+
+    const intervalo = setInterval(verificarEventosProximos, 30000);
+
+    return () => {
+      clearInterval(intervalo);
+    };
+  }, [events]); // Adiciona `events` como dependência
+
+  useEffect(() => {
+    if ('Notification' in window) {
+      console.log("Permissão de notificações:", Notification.permission);
+      if (Notification.permission === 'granted') {
+        new Notification("Teste de Notificação", { body: "Isso é um teste." });
+      } else {
+        console.log("Permissão de notificações não concedida.");
+      }
+    } else {
+      console.log("Notificações não são suportadas neste navegador.");
+    }
   }, []);
 
   // Abrir modal ao clicar em um evento

@@ -33,21 +33,25 @@ const AddEventModal = ({ isOpen, onRequestClose, onSave, event }) => {
     e.preventDefault();
     const inicio = new Date(start);
     const fim = new Date(end);
+
     if (inicio >= fim) {
       setError('A data de início deve ser anterior à data de término.');
       return;
     }
+
     setError('');
     const newEvent = {
       id: event?.id,
       title,
       description,
-      start: inicio,
-      end: fim,
+      start: inicio.toISOString(), // Converte para UTC
+      end: fim.toISOString(),     // Converte para UTC
       priority: parseInt(priority, 10),
     };
+
     console.log("Salvando evento com ID:", newEvent.id);
-    onSave(newEvent); // Vai pra handleEditEvent ou handleAddEvent
+    console.log("Evento a ser enviado:", newEvent); // Log para depuração
+    onSave(newEvent); // Vai para handleEditEvent ou handleAddEvent
     onRequestClose();
   };
 
