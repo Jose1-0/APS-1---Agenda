@@ -1,0 +1,18 @@
+.custom-agenda-event {
+    padding: 10px;
+    border-left: 5px solid #3174ad;
+  }
+  
+  .custom-agenda-event strong {
+    font-size: 1.1em;
+  }
+  
+  .custom-agenda-event p {
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  .custom-agenda-event small {
+    display: block;
+    color: #888;
+  }
