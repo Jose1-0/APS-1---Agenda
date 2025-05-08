@@ -164,14 +164,19 @@ const App = () => {
     }
   };
 
-  const handleSelectDate = () => {
+  const handleSelectDate = (selectedDate) => {
     const now = new Date(); // Horário atual
-    const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000); // Horário atual + 1 hora
+    const start = new Date(selectedDate); // Usa o dia clicado
+    const end = new Date(selectedDate);
+
+    // Ajusta o horário para o horário atual
+    start.setHours(now.getHours(), now.getMinutes(), 0, 0);
+    end.setHours(now.getHours() + 1, now.getMinutes(), 0, 0); // +1 hora
 
     const newEvent = {
       title: '',
-      start: now.toISOString(), // Converte para ISO
-      end: oneHourLater.toISOString(), // Converte para ISO
+      start: start.toISOString(), // Converte para ISO
+      end: end.toISOString(), // Converte para ISO
     };
 
     console.log("Criando novo evento:", newEvent);
