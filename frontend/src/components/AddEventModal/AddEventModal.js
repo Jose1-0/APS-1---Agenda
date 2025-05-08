@@ -8,6 +8,7 @@ const AddEventModal = ({ isOpen, onRequestClose, onSave, event }) => {
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
   const [priority, setPriority] = useState(1);
+  const [error, setError] = useState('');
 
   // Preenche o formulário com os dados do evento, se estiver editando
   useEffect(() => {
@@ -25,16 +26,24 @@ const AddEventModal = ({ isOpen, onRequestClose, onSave, event }) => {
       setEnd('');
       setPriority(1);
     }
+    setError('');
   }, [event, isOpen]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const inicio = new Date(start);
+    const fim = new Date(end);
+    if (inicio >= fim) {
+      setError('A data de início deve ser anterior à data de término.');
+      return;
+    }
+    setError('');
     const newEvent = {
       id: event?.id,
       title,
       description,
-      start: new Date(start),
-      end: new Date(end),
+      start: inicio,
+      end: fim,
       priority: parseInt(priority, 10),
     };
     console.log("Salvando evento com ID:", newEvent.id);
@@ -92,6 +101,7 @@ const AddEventModal = ({ isOpen, onRequestClose, onSave, event }) => {
               <option value={3}>Alta</option>
             </select>
           </div>
+          {error && <p className="error-message">{error}</p>}
           <div className="modal-buttons">
             <button type="submit">Salvar</button>
             <button type="button" onClick={onRequestClose}>Cancelar</button>

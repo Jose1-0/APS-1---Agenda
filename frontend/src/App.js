@@ -5,6 +5,8 @@ import EventModal from './components/EventModal/EventModal';
 import AddEventModal from './components/AddEventModal/AddEventModal';
 import './App.css';
 
+// Nenhum import adicional necessário para notificações locais
+
 const App = () => {
   const [events, setEvents] = useState([]); // Guarda todos os eventos do calendário
   const [selectedEvent, setSelectedEvent] = useState(null); // Evento clicado
@@ -29,6 +31,57 @@ const App = () => {
       }
     };
     fetchEvents();
+
+    if ('Notification' in window) {
+      Notification.requestPermission();
+    }
+
+    const verificarEventosProximos = () => {
+      if (Notification.permission !== 'granted') return;
+
+      const agora = new Date();
+      console.log("Horário (local):", agora.toString());
+      const proximosMinutos = 30;
+
+      const notificados = JSON.parse(localStorage.getItem('eventosNotificados') || '[]');
+      const novosNotificados = [...notificados];
+
+      events.forEach(evento => {
+        const tempoRestante = (new Date(evento.start) - agora) / 60000;
+        console.log("Evento:", evento.title);
+        console.log("Início do evento (local):", new Date(evento.start).toString());
+        console.log("Tempo restante em minutos:", tempoRestante);
+
+        if (
+          tempoRestante >= -1 && // permite atraso de até 1 minuto
+          tempoRestante <= proximosMinutos &&
+          !notificados.includes(evento.id)
+        ) {
+          console.log("Disparando notificação para:", evento.title);
+          new Notification("Lembrete de Evento", {
+            body: `${evento.title} começa em ${Math.round(tempoRestante)} minutos.`,
+          });
+
+          novosNotificados.push(evento.id);
+        }
+      });
+
+      localStorage.setItem('eventosNotificados', JSON.stringify(novosNotificados));
+    };
+
+    const intervalo = setInterval(verificarEventosProximos, 60000);
+
+    const limparNotificacoesAntigas = () => {
+      const agora = new Date();
+      if (agora.getHours() === 0 && agora.getMinutes() === 0) {
+        localStorage.removeItem('eventosNotificados');
+      }
+    };
+    const limpezaIntervalo = setInterval(limparNotificacoesAntigas, 60000);
+    return () => {
+      clearInterval(intervalo);
+      clearInterval(limpezaIntervalo);
+    };
   }, []);
 
   // Abrir modal ao clicar em um evento
@@ -59,7 +112,12 @@ const App = () => {
   const handleAddEvent = async (newEvent) => {
     try {
       const response = await createEvent(newEvent);
-      setEvents([...events, response.data]);
+      const eventNovo = {
+        ...response.data,
+        start: new Date(response.data.start),
+        end: new Date(response.data.end),
+      };
+      setEvents([...events, eventNovo]);
     } catch (error) {
       console.error('Erro ao adicionar evento:', error);
     }
@@ -69,8 +127,13 @@ const App = () => {
   const handleEditEvent = async (updatedEvent) => {
     try {
       const response = await updateEvent(updatedEvent.id, updatedEvent); // usa o id do próprio evento
+      const eventAtualizado = {
+        ...response.data,
+        start: new Date(response.data.start),
+        end: new Date(response.data.end),
+      };
       const updatedEvents = events.map(event =>
-        event.id === selectedEvent.id ? response.data : event
+        event.id === selectedEvent.id ? eventAtualizado : event
       );
       setEvents(updatedEvents);
       closeModal();
