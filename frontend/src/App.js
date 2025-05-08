@@ -164,12 +164,16 @@ const App = () => {
     }
   };
 
-  const handleSelectDate = (selectedDate) => {
+  const handleSelectDate = () => {
+    const now = new Date(); // Horário atual
+    const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000); // Horário atual + 1 hora
+
     const newEvent = {
       title: '',
-      start: selectedDate,
-      end: selectedDate,
+      start: now.toISOString(), // Converte para ISO
+      end: oneHourLater.toISOString(), // Converte para ISO
     };
+
     console.log("Criando novo evento:", newEvent);
     setSelectedEvent(newEvent);
     setAddModalIsOpen(true);

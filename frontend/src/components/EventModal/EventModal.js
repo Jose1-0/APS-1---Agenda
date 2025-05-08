@@ -16,7 +16,7 @@ const EventModal = ({ isOpen, onRequestClose, event, onDelete, onEdit }) => {
       overlayClassName="event-modal-overlay"
     >
       <h2>{event.title}</h2>
-      <p><strong>Descrição:</strong> {event.description}</p>
+      <p><strong>Descrição:</strong> {event.description || "Vazio"}</p>
       <p><strong>Início:</strong> {moment(event.start).format('DD/MM/YYYY [às] HH:mm')}</p>
       <p><strong>Término:</strong> {moment(event.end).format('DD/MM/YYYY [às] HH:mm')}</p>
       <p><strong>Prioridade:</strong> {
