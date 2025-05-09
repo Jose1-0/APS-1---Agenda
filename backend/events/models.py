@@ -11,7 +11,7 @@ class Event(models.Model):
     start = models.DateTimeField()
     end = models.DateTimeField()
     description = models.TextField(blank=True, null=True)
-    priority = models.IntegerField(choices=PRIORITY_CHOICES, default=1)
+    priority = models.IntegerField(choices=PRIORITY_CHOICES, blank=True, null=True)
 
     def __str__(self):
         return self.title

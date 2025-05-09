@@ -7,24 +7,24 @@ const AddEventModal = ({ isOpen, onRequestClose, onSave, event }) => {
   const [description, setDescription] = useState('');
   const [start, setStart] = useState('');
   const [end, setEnd] = useState('');
-  const [priority, setPriority] = useState(1);
+  const [priority, setPriority] = useState("null");
   const [error, setError] = useState('');
 
   // Preenche o formulário com os dados do evento, se estiver editando
   useEffect(() => {
     if (event) {
-      setTitle(event.title);
-      setDescription(event.description);
+      setTitle(event.title || '');
+      setDescription(event.description || '');
       setStart(moment(event.start).format('YYYY-MM-DDTHH:mm'));
       setEnd(moment(event.end).format('YYYY-MM-DDTHH:mm'));
-      setPriority(event.priority ?? 1); // usa 1 se for null ou undefined
+      setPriority(event.priority ?? "null");
     } else {
       // Limpa o formulário se estiver adicionando um novo evento
       setTitle('');
       setDescription('');
       setStart('');
       setEnd('');
-      setPriority(1);
+      setPriority(null);
     }
     setError('');
   }, [event, isOpen]);
@@ -98,8 +98,9 @@ const AddEventModal = ({ isOpen, onRequestClose, onSave, event }) => {
             <label>Prioridade</label>
             <select
               value={priority}
-              onChange={(e) => setPriority(e.target.value)}
+              onChange={(e) => setPriority(e.target.value === "null" ? null : parseInt(e.target.value, 10))}
             >
+              <option value="null">Sem prioridade</option>
               <option value={1}>Baixa</option>
               <option value={2}>Média</option>
               <option value={3}>Alta</option>
