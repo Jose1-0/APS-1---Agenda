@@ -32,7 +32,7 @@ const eventStyleGetter = (event) => {
       backgroundColor = '#f44336'; // vermelho
       break;
     default:
-      backgroundColor = '#3174ad'; // cor padrão (azul)
+      backgroundColor = '#32b2fc'; // cor padrão (azul)
   }
 
   return {
